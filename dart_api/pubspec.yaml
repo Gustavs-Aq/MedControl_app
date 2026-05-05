@@ -1,0 +1,10 @@
+name: medcontrol_api
+description: MedControl – API REST em Dart puro
+version: 1.0.0
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+
+dependencies:
+  sqlite3: ^2.4.3
+  sqlite3_flutter_libs: any
