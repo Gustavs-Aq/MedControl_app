@@ -1,0 +1,49 @@
+name: Build APK (Flutter)
+
+on:
+  push:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Clonar repo
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # 2. Instalar Java (necessário pro Android)
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      # 3. Instalar Flutter
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.22.2'  # versão estável segura
+          channel: 'stable'
+          cache: true
+
+      # 4. Ver versão (debug)
+      - name: Flutter version
+        run: flutter --version
+
+      # 5. Instalar dependências
+      - name: Install dependencies
+        run: flutter pub get
+
+      # 6. Build APK
+      - name: Build APK
+        run: flutter build apk --release
+
+      # 7. Salvar APK como artefato
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-release
+          path: build/app/outputs/flutter-apk/app-release.apk
